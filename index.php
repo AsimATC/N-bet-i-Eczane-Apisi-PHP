@@ -1,9 +1,19 @@
 <?php
+/*
+
+**Notlar**
+Test olarak mevcut apikey kullanabilirsiniz, limit olduğu için hata verebilir
+
+--> https://api.collectapi.com/
+adresinden ücretsiz bir şekidle apikey oluşturabilirsiniz
+
+*/
+
 
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "https://api.collectapi.com/health/dutyPharmacy?il=Nigde",
+  CURLOPT_URL => "https://api.collectapi.com/health/dutyPharmacy?il=Diyarbakir",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
