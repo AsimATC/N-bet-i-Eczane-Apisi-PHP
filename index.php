@@ -9,11 +9,92 @@ adresinden ücretsiz bir şekidle apikey oluşturabilirsiniz
 
 */
 
+date_default_timezone_set('Europe/Istanbul'); //İstanbul Türkiye
 
+function ayyaz($ay)
+{
+  switch ($ay) {
+    case 1:
+      return "Ocak";
+      break;
+    case 2:
+      return "Şubat";
+      break;
+    case 3:
+      return "Mart";
+      break;
+    case 4:
+      return "Nisan";
+      break;
+    case 5:
+      return "Mayıs";
+      break;
+    case 6:
+      return "Haziran";
+      break;
+    case 7:
+      return "Temmuz";
+      break;
+    case 8:
+      return "Ağustos";
+      break;
+    case 9:
+      return "Eylül";
+      break;
+    case 10:
+      return "Ekim";
+      break;
+    case 11:
+      return "Kasım";
+      break;
+    case 12:
+      return "Aralık";
+      break;
+
+    default:
+      return "Ay Bulunamadı !";
+      break;
+  }
+}
+
+function GunuAdileYaz($gun)
+{
+  switch ($gun) {
+    case "Fri":
+      return "Cuma";
+      break;
+    case "Sat":
+      return "Cumartesi";
+      break;
+    case "Sun":
+      return "Pazar";
+      break;
+    case "Mon":
+      return "Pazartesi";
+      break;
+    case "Tue":
+      return "Salı";
+      break;
+    case "Wed":
+      return "Çarşamba";
+      break;
+    case "Thu":
+      return "Perşembe";
+      break;
+
+    default:
+      return "Ay Bulunamadı !";
+      break;
+  }
+}
+
+// Başlık Ayarlanıyor
+$baslik = "NİĞDE NÖBETÇİ ECZANELER | " . date('d') . " " . ayyaz(date("m")) . " " . date('Y') . " " . GunuAdileYaz(date('D')) . " Nöbetçi Eczane";
+
+// Api Start
 $curl = curl_init();
-
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "https://api.collectapi.com/health/dutyPharmacy?il=Diyarbakir",
+  CURLOPT_URL => "https://api.collectapi.com/health/dutyPharmacy?il=Nigde",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -38,10 +119,20 @@ if ($err) {
 }
 
 $pharmacy = json_decode($response, true);
-
-
 $harmacy_all = $pharmacy['result'];
 
+// Metin Döngü İle Yazdırtıyoruz
 foreach ($harmacy_all as $pharmacys) {
-  echo $pharmacys['name'] . " - " . $pharmacys['dist'] . " - " .  $pharmacys['address'] . " - " .  $pharmacys['phone'] . " - " .  $pharmacys['loc'] . "<hr>";
-}
+  // $pharmacys['name'] . " - " . $pharmacys['dist'] . " - " .  $pharmacys['address'] . " - " .  $pharmacys['phone'] . " - " .  $pharmacys['loc'] . "<hr>";
+  // Eczane Adı                    İlçesi                       Adresi                            Telefon                       Konum
+?>
+  <!-- ITEM -->
+  <h2>NİĞDE <?= $pharmacys['dist'] ?> NÖBEÇTİ ECZANE</h2>
+  <p><?= $pharmacys['name'] ?> ECZANESİ</p>
+  <p> <?= $pharmacys['address'] ?></p>
+  <p><b>TELEFON : </b> <a href="tel:<?= $pharmacys['phone'] ?>"><?= $pharmacys['phone'] ?></a></p>
+  <u> <b><a href="https://www.google.com/maps/dir/My+Location/<?= $pharmacys['loc'] ?>" target="_blank"> Yol Tarifi İçin Tıklayınız</a></b></u>
+  <p><br data-cke-filler="true"></p>
+  <p><br data-cke-filler="true"></p>
+
+<?php } ?>
